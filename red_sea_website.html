@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Red Sea — A Shared Heritage in Crisis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson:    #8B1A1A;
+    --gold:       #C9A84C;
+    --gold-light: #E8C97A;
+    --amber:      #D4783A;
+    --deep:       #1A0F08;
+    --dark:       #251510;
+    --mid:        #3A200F;
+    --surface:    #2E1A0E;
+    --surface2:   #3D2415;
+    --warm-white: #F5EDD8;
+    --cream:      #EFE0C0;
+    --muted:      #A89070;
+    --text:       #DDD0B8;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.2s;
+    transform: translate(-50%,-50%);
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform 0.4s cubic-bezier(.17,.67,.35,.99), width 0.3s, height 0.3s, opacity 0.2s;
+    opacity: 0.6;
+  }
+
+  /* Noise overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.35;
+  }
+
+  /* ===================== NAV ===================== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 500;
+    padding: 0 60px;
+    height: 72px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(26,15,8,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex; gap: 40px; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* ===================== HERO ===================== */
+  #hero {
+    height: 100vh;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(139,26,26,0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 80% at 20% 80%, rgba(201,168,76,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 50% at 80% 20%, rgba(212,120,58,0.15) 0%, transparent 50%),
+      linear-gradient(165deg, #1A0F08 0%, #2A1208 40%, #1A0F08 100%);
+  }
+
+  /* Animated water rings */
+  .wave-rings {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.15);
+    animation: ringPulse 8s ease-in-out infinite;
+  }
+  .ring:nth-child(1) { width: 300px; height: 300px; animation-delay: 0s; }
+  .ring:nth-child(2) { width: 500px; height: 500px; animation-delay: 1.5s; }
+  .ring:nth-child(3) { width: 700px; height: 700px; animation-delay: 3s; }
+  .ring:nth-child(4) { width: 900px; height: 900px; animation-delay: 4.5s; }
+  .ring:nth-child(5) { width: 1100px; height: 1100px; animation-delay: 6s; }
+  @keyframes ringPulse {
+    0%   { opacity: 0; transform: scale(0.8); }
+    30%  { opacity: 1; }
+    100% { opacity: 0; transform: scale(1.2); }
+  }
+
+  /* Floating particles */
+  .particles {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: float linear infinite;
+    opacity: 0;
+  }
+  @keyframes float {
+    0%   { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-10vh) translateX(var(--drift, 30px)); opacity: 0; }
+  }
+
+  .hero-content {
+    position: relative; z-index: 10;
+    text-align: center;
+    max-width: 900px;
+    padding: 0 40px;
+  }
+  .hero-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: fadeUp 1s forwards 0.5s;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 1.0;
+    color: var(--warm-white);
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeUp 1.2s forwards 0.8s;
+  }
+  .hero-title .accent {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: fadeUp 1.2s forwards 1.2s;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 16px;
+    padding: 16px 48px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    transition: background 0.4s, color 0.4s;
+    opacity: 0;
+    animation: fadeUp 1s forwards 1.6s;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+  .hero-cta:hover { color: var(--deep); }
+  .hero-cta:hover::before { transform: scaleX(1); }
+
+  .scroll-hint {
+    position: absolute; bottom: 40px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    opacity: 0;
+    animation: fadeIn 1s forwards 2.5s;
+  }
+  .scroll-hint span {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%,100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.3); opacity: 0.4; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ===================== SECTIONS COMMON ===================== */
+  section { position: relative; }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 60px;
+  }
+
+  .section-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    color: var(--warm-white);
+    line-height: 1.15;
+    margin-bottom: 30px;
+  }
+  .section-title em { color: var(--gold); font-style: italic; }
+
+  .section-text {
+    font-size: 1.05rem;
+    color: var(--text);
+    line-height: 1.85;
+    max-width: 700px;
+  }
+
+  .gold-rule {
+    width: 60px; height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--amber));
+    margin: 40px 0;
+  }
+
+  /* ===================== ABOUT ===================== */
+  #about {
+    background: linear-gradient(to bottom, var(--deep), var(--dark));
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 60px;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+  .stat-box {
+    background: var(--surface);
+    padding: 40px 30px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .stat-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--gold), var(--amber));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.5s ease;
+  }
+  .stat-box:hover::before { transform: scaleY(1); }
+  .stat-box:hover { background: var(--surface2); }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stat-desc {
+    font-size: 0.85rem;
+    color: var(--text);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+
+  /* ===================== CRISIS ===================== */
+  #crisis {
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+  #crisis::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 50% at 50% 50%, rgba(139,26,26,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .crisis-banner {
+    background: linear-gradient(135deg, rgba(139,26,26,0.4), rgba(139,26,26,0.15));
+    border: 1px solid rgba(139,26,26,0.6);
+    border-left: 4px solid var(--crimson);
+    padding: 30px 40px;
+    margin-bottom: 60px;
+    position: relative;
+  }
+  .crisis-banner::before {
+    content: '⚠';
+    font-size: 1.5rem;
+    position: absolute; top: 28px; right: 40px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .crisis-banner-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #E87070;
+    margin-bottom: 8px;
+  }
+  .crisis-banner-text {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .timeline {
+    position: relative;
+    margin-top: 60px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 20px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), var(--crimson), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    padding: 0 0 50px 70px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .timeline-item.visible {
+    opacity: 1; transform: translateX(0);
+  }
+  .timeline-dot {
+    position: absolute; left: 10px; top: 6px;
+    width: 22px; height: 22px;
+    background: var(--deep);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .timeline-dot::after {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .timeline-date {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .timeline-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--warm-white);
+    margin-bottom: 10px;
+  }
+  .timeline-text {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* ===================== BIODIVERSITY ===================== */
+  #biodiversity {
+    background: linear-gradient(to bottom, var(--dark), var(--surface));
+    overflow: hidden;
+  }
+
+  .bio-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+  .bio-card {
+    background: var(--surface);
+    padding: 50px 35px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+  }
+  .bio-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--gold), var(--amber));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+  }
+  .bio-card:hover { transform: translateY(-6px); }
+  .bio-card:hover::after { transform: scaleX(1); }
+  .bio-icon {
+    font-size: 3rem;
+    margin-bottom: 24px;
+    display: block;
+  }
+  .bio-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--warm-white);
+    margin-bottom: 16px;
+  }
+  .bio-text {
+    font-size: 0.92rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .bio-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-top: 20px;
+  }
+
+  /* ===================== SEEP ===================== */
+  #seep {
+    background: var(--surface);
+  }
+  .seep-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3px;
+    margin-top: 60px;
+  }
+  .seep-card {
+    padding: 50px 45px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s;
+  }
+  .seep-card:nth-child(1) { background: linear-gradient(135deg, #2A1208, #3D2415); }
+  .seep-card:nth-child(2) { background: linear-gradient(135deg, #201A08, #342A10); }
+  .seep-card:nth-child(3) { background: linear-gradient(135deg, #0A1A12, #12291C); }
+  .seep-card:nth-child(4) { background: linear-gradient(135deg, #1A1228, #271A3A); }
+
+  .seep-card:hover { transform: scale(1.01); }
+
+  .seep-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: rgba(201,168,76,0.12);
+    position: absolute; top: 20px; right: 30px;
+    line-height: 1;
+  }
+  .seep-tag {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .seep-tag::before {
+    content: '';
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--gold);
+  }
+  .seep-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--warm-white);
+    margin-bottom: 20px;
+  }
+  .seep-list {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .seep-list li {
+    font-size: 0.9rem;
+    color: var(--text);
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.6;
+  }
+  .seep-list li::before {
+    content: '—';
+    position: absolute; left: 0;
+    color: var(--gold);
+  }
+
+  /* ===================== SOLUTION ===================== */
+  #solution {
+    background: linear-gradient(to bottom, var(--surface), var(--dark));
+    overflow: hidden;
+    position: relative;
+  }
+  #solution::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 60%, rgba(201,168,76,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .solutions-list {
+    display: flex; flex-direction: column; gap: 3px;
+    margin-top: 60px;
+  }
+  .solution-item {
+    background: var(--surface);
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    overflow: hidden;
+    transition: background 0.3s;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s, background 0.3s;
+  }
+  .solution-item.visible { opacity: 1; transform: translateY(0); }
+  .solution-item:hover { background: var(--surface2); }
+  .solution-num {
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--deep);
+  }
+  .solution-body {
+    padding: 40px 50px;
+  }
+  .solution-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--warm-white);
+    margin-bottom: 12px;
+  }
+  .solution-text {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.75;
+  }
+
+  /* ===================== COUNTRIES ===================== */
+  #nations {
+    background: var(--dark);
+  }
+  .nations-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+  .nation-card {
+    background: var(--surface);
+    padding: 35px 25px;
+    text-align: center;
+    transition: background 0.3s, transform 0.3s;
+    cursor: default;
+  }
+  .nation-card:hover {
+    background: var(--surface2);
+    transform: translateY(-4px);
+  }
+  .nation-flag {
+    font-size: 2.5rem;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .nation-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--warm-white);
+    margin-bottom: 8px;
+  }
+  .nation-fact {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ===================== CALL TO ACTION ===================== */
+  #cta {
+    background: var(--deep);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  #cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 900;
+    color: var(--warm-white);
+    line-height: 1.1;
+    margin-bottom: 30px;
+  }
+  .cta-title em { color: var(--gold); font-style: italic; }
+
+  .cta-actions {
+    display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+    margin-top: 50px;
+  }
+  .btn-primary {
+    padding: 18px 50px;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    color: var(--deep);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+
+  .citizen-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+    text-align: left;
+  }
+  .action-card {
+    background: var(--surface);
+    padding: 40px 35px;
+    border-top: 2px solid var(--gold);
+  }
+  .action-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(201,168,76,0.2);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .action-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--warm-white);
+    margin-bottom: 12px;
+  }
+  .action-text {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  /* ===================== FOOTER ===================== */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid rgba(201,168,76,0.2);
+    padding: 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: end;
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .footer-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 400px;
+  }
+  .footer-authors {
+    text-align: right;
+  }
+  .footer-authors-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .footer-author {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--warm-white);
+    display: block;
+    line-height: 1.8;
+  }
+  .footer-bottom {
+    background: var(--deep);
+    text-align: center;
+    padding: 20px 60px 40px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .footer-bottom-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(168,144,112,0.5);
+    text-transform: uppercase;
+  }
+
+  /* ===================== REVEAL ON SCROLL ===================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===================== DECORATIVE QUOTE ===================== */
+  .pullquote {
+    border-left: 4px solid var(--gold);
+    padding: 30px 40px;
+    margin: 60px 0;
+    background: rgba(201,168,76,0.05);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.6;
+    position: relative;
+  }
+  .pullquote cite {
+    display: block;
+    margin-top: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-style: normal;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* Horizontal divider */
+  .divider {
+    border: none;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    margin: 0;
+  }
+
+  /* Source badges */
+  .source-badge {
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 3px 10px;
+    margin-left: 6px;
+    vertical-align: middle;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 900px) {
+    .about-grid, .bio-cards, .seep-grid, .nations-grid, .citizen-actions { grid-template-columns: 1fr; }
+    .section-inner { padding: 80px 30px; }
+    nav { padding: 0 30px; }
+    .nav-links { display: none; }
+    footer { grid-template-columns: 1fr; }
+    .footer-authors { text-align: left; }
+    .solution-item { grid-template-columns: 80px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Red Sea Matters</div>
+  <ul class="nav-links">
+    <li><a href="#about">The Sea</a></li>
+    <li><a href="#crisis">Crisis</a></li>
+    <li><a href="#biodiversity">Ecology</a></li>
+    <li><a href="#seep">Analysis</a></li>
+    <li><a href="#solution">Solutions</a></li>
+    <li><a href="#cta">Act Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="wave-rings">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <div class="particles" id="particles"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">IB MYP Geography · Expert Analysis · 2025</p>
+    <h1 class="hero-title">The <span class="accent">Red Sea</span></h1>
+    <p class="hero-subtitle">A Shared Heritage in Crisis — Fairness, Ecology & Justice</p>
+    <a href="#about" class="hero-cta">Explore the Crisis →</a>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">The Water Body</div>
+    <h2 class="section-title">One Sea.<br><em>Eight Nations.</em></h2>
+    <div class="gold-rule"></div>
+    <p class="section-text">The Red Sea is a semi-enclosed inlet of the Indian Ocean stretching 2,250 km between Africa and the Arabian Peninsula. It is one of the most strategically critical bodies of water on Earth — and one of the most threatened. Eight nations share its shores, its fish, its trade routes, and its fate. <span class="source-badge">Wikipedia 2024</span></p>
+
+    <div class="about-grid">
+      <div>
+        <p class="section-text" style="margin-bottom:30px;">
+          Its 2,000 km of fringing coral reefs — 5,000 to 7,000 years old — are among the most biodiverse and heat-resistant on the planet. Its coral ecosystems may be humanity's last refuge as oceans warm. <span class="source-badge">UNESCO 2024</span>
+        </p>
+        <p class="section-text">
+          At the same time, this fragile system carries 12–15% of all global maritime trade through the Suez Canal — connecting Europe to Asia, supporting millions of jobs, and keeping the price of goods stable worldwide. <span class="source-badge">Wikipedia 2024</span>
+        </p>
+
+        <div class="pullquote">
+          "The Red Sea is bordered by eight countries, some of which have no official ties with each other or are in active conflict — yet all share the same ecosystem."
+          <cite>Kleinhaus et al., Frontiers in Marine Science, 2020</cite>
+        </div>
+      </div>
+
+      <div class="stat-grid reveal">
+        <div class="stat-box">
+          <div class="stat-number">438K</div>
+          <div class="stat-label">km² Surface Area</div>
+          <div class="stat-desc">One of the world's most biodiverse enclosed seas.</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">12–15%</div>
+          <div class="stat-label">of World Trade</div>
+          <div class="stat-desc">Passes through the Suez Canal route every year.</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">28M+</div>
+          <div class="stat-label">People Depend on It</div>
+          <div class="stat-desc">Coastal residents relying on the Red Sea ecosystem.</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">$12B</div>
+          <div class="stat-label">Tourism Revenue</div>
+          <div class="stat-desc">Annual income from Red Sea tourism and diving.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CRISIS -->
+<section id="crisis">
+  <div class="section-inner">
+    <div class="section-label">The Crisis</div>
+    <h2 class="section-title">A Sea Under<br><em>Siege</em></h2>
+    <div class="gold-rule"></div>
+
+    <div class="crisis-banner reveal">
+      <div class="crisis-banner-title">Emergency Alert: Ongoing Environmental Destruction</div>
+      <div class="crisis-banner-text">Since November 2023, over 190 Houthi attacks on commercial shipping have triggered oil spills, ecological collapse, and a 57.5% collapse in Suez Canal transit volumes. The damage is not distributed equally — the poorest nations suffer most. <span class="source-badge">Atlas Institute 2025</span></div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">November 2023</div>
+        <div class="timeline-title">The Campaign Begins</div>
+        <div class="timeline-text">Yemen's Houthi movement launches its first attacks on Red Sea shipping, framing it as solidarity with Gaza. Within weeks, major shipping companies begin rerouting via the Cape of Good Hope — adding 10–14 days to every Asia-Europe voyage. <span class="source-badge">Atlas Institute 2025</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">February 2024</div>
+        <div class="timeline-title">MV Rubymar — The First Environmental Catastrophe</div>
+        <div class="timeline-text">A Houthi missile strikes the bulk carrier MV Rubymar, creating an 18-mile oil slick. More alarming: the ship was carrying 21,000 metric tons of ammonium-based fertilizer — enough to trigger massive algal blooms devastating coral reefs and fishing grounds across Yemen's coast. <span class="source-badge">AGSI 2025</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">August 2024</div>
+        <div class="timeline-title">MT Sounion — Closest to Catastrophe</div>
+        <div class="timeline-text">The Greek-flagged oil tanker Sounion is attacked and set ablaze near Hodeidah. Carrying enough crude oil to trigger the largest oil spill of the 21st century, an EU-led salvage mission (Operation Aspides) narrowly averts environmental disaster. <span class="source-badge">PAX 2025</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">July 2025</div>
+        <div class="timeline-title">Eritrea's Coastline at Risk</div>
+        <div class="timeline-text">Two more ships are sunk in six days. Oil slicks drift within 13 km of Eritrea's Barasole Marine Reserve — a 150,000-hectare biodiversity hotspot for sea turtles, mangroves, and unique coral. Eritrea has no capacity to deploy emergency clean-up. <span class="source-badge">PAX 2025</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2023–2025</div>
+        <div class="timeline-title">The Human Cost: Yemen's Fishers</div>
+        <div class="timeline-text">Of Yemen's 300,000 coastal fishers — already surviving a catastrophic civil war — over 60% lost their livelihoods. The ecological destruction of their fishing grounds, combined with famine, created a humanitarian emergency without precedent. <span class="source-badge">Mongabay 2024</span></div>
+      </div>
+    </div>
+
+    <div class="pullquote reveal">
+      "The Houthis' attacks raised serious environmental concerns regarding marine ecosystems and wildlife, as the Red Sea supports coral ecosystems and rare aquatic species, including mangroves that protect the coastline."
+      <cite>Frontiers in Political Science, 2025</cite>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- BIODIVERSITY -->
+<section id="biodiversity">
+  <div class="section-inner">
+    <div class="section-label">The Ecology</div>
+    <h2 class="section-title">A World Beneath<br><em>the Surface</em></h2>
+    <div class="gold-rule"></div>
+    <p class="section-text">The Red Sea is home to extraordinary biodiversity — and its corals are uniquely positioned as a global refuge from climate change. What makes it irreplaceable, and what stands to be lost forever? <span class="source-badge">EBSCO 2024</span></p>
+
+    <div class="bio-cards reveal">
+      <div class="bio-card">
+        <span class="bio-icon">🐠</span>
+        <div class="bio-title">Marine Fish Species</div>
+        <div class="bio-text">The Red Sea hosts an extraordinary array of fish species, with around 14.7% found nowhere else on Earth — some of the highest endemism rates of any sea on the planet.</div>
+        <div class="bio-num">1,200+</div>
+      </div>
+      <div class="bio-card">
+        <span class="bio-icon">🪸</span>
+        <div class="bio-title">Coral Species</div>
+        <div class="bio-text">Over 200 coral species form 2,000 km of fringing reefs, 5,000–7,000 years old. Crucially, these corals withstand temperatures that bleach reefs elsewhere — making the Red Sea a potential climate refuge. <span class="source-badge">UNESCO 2024</span></div>
+        <div class="bio-num">200+</div>
+      </div>
+      <div class="bio-card">
+        <span class="bio-icon">🦑</span>
+        <div class="bio-title">Invertebrate Species</div>
+        <div class="bio-text">From nudibranch to dugong, the Red Sea supports over 1,000 invertebrate species on its shallow shelves, plus five species of sea turtle and vast seagrass meadows vital for carbon sequestration. <span class="source-badge">EBSCO 2024</span></div>
+        <div class="bio-num">1,000+</div>
+      </div>
+    </div>
+
+    <div class="bio-cards" style="margin-top:3px;">
+      <div class="bio-card">
+        <span class="bio-icon">🏛️</span>
+        <div class="bio-title">No Reef-Wide Management</div>
+        <div class="bio-text">Despite being split between 8 nations, there are currently no coordinated scientific research or management efforts covering the entire Red Sea reef complex — unlike the Great Barrier Reef or Coral Triangle. <span class="source-badge">Kleinhaus 2020</span></div>
+      </div>
+      <div class="bio-card">
+        <span class="bio-icon">🌡️</span>
+        <div class="bio-title">Climate Refuge Under Threat</div>
+        <div class="bio-text">The Gulf of Aqaba's corals could be one of the planet's largest marine refuges from climate change — but only if anthropogenic stressors are immediately reduced. Oil spills, overfishing, and pollution imperil this global treasure. <span class="source-badge">UNESCO 2024</span></div>
+      </div>
+      <div class="bio-card">
+        <span class="bio-icon">🎣</span>
+        <div class="bio-title">Fisheries in Decline</div>
+        <div class="bio-text">Nearly all Egyptian artisanal fishers report declining catches. 61% blame overfishing. Modern commercial fleets harvest immature fish unable to reproduce. Egyptian Red Sea fishers earn just 54% of average rural income. <span class="source-badge">Pinnegar 2024</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- NATIONS -->
+<section id="nations">
+  <div class="section-inner">
+    <div class="section-label">The Bordering States</div>
+    <h2 class="section-title">Eight Nations,<br><em>One Fate</em></h2>
+    <div class="gold-rule"></div>
+    <p class="section-text">The Red Sea is shared by eight countries spanning two continents — with vastly different economies, political systems, and levels of environmental capacity. This inequality is at the heart of the justice crisis. <span class="source-badge">Wikipedia 2024</span></p>
+
+    <div class="nations-grid reveal">
+      <div class="nation-card">
+        <span class="nation-flag">🇪🇬</span>
+        <div class="nation-name">Egypt</div>
+        <div class="nation-fact">Operates the Suez Canal. Lost billions in revenue from the shipping crisis. Home to world-famous dive resorts: Hurghada, Dahab, Sharm el-Sheikh.</div>
+      </div>
+      <div class="nation-card">
+        <span class="nation-flag">🇸🇦</span>
+        <div class="nation-name">Saudi Arabia</div>
+        <div class="nation-fact">Hosts PERSGA Secretariat. Largest economy on the Red Sea. Investing in NEOM and coral reef protection via Saudi Green Initiative.</div>
+      </div>
+      <div class="nation-card">
+        <span class="nation-flag">🇾🇪</span>
+        <div class="nation-name">Yemen</div>
+        <div class="nation-fact">In active civil war. 300,000+ coastal fishers, 60%+ unemployed. Source of the Houthi crisis. Bears both the political and ecological burden.</div>
+      </div>
+      <div class="nation-card">
+        <span class="nation-flag">🇸🇩</span>
+        <div class="nation-name">Sudan</div>
+        <div class="nation-fact">Home to Sanganeb Marine National Park — a UNESCO World Heritage Site. Limited maritime enforcement capacity. Relies on Red Sea fisheries for food security.</div>
+      </div>
+      <div class="nation-card">
+        <span class="nation-flag">🇪🇷</span>
+        <div class="nation-name">Eritrea</div>
+        <div class="nation-fact">Coastline threatened by oil slicks in 2025. Home to the Dahlak Archipelago with 350+ islands. Minimal capacity to respond to environmental emergencies.</div>
+      </div>
+      <div class="nation-card">
+        <span class="nation-flag">🇩🇯</span>
+        <div class="nation-name">Djibouti</div>
+        <div class="nation-fact">Strategic gateway at the Bab el-Mandeb Strait. Hosts major international military bases. A key node in global shipping routes.</div>
+      </div>
+      <div class="nation-card">
+        <span class="nation-flag">🇯🇴</span>
+        <div class="nation-name">Jordan</div>
+        <div class="nation-fact">Controls only a narrow strip at the Gulf of Aqaba. Aqaba is a major Red Sea dive tourism hub. Involved in Red Sea–Dead Sea water conveyance discussions.</div>
+      </div>
+      <div class="nation-card">
+        <span class="nation-flag">🇮🇱</span>
+        <div class="nation-name">Israel</div>
+        <div class="nation-fact">Borders the Gulf of Aqaba at Eilat. No formal diplomatic ties with most Red Sea neighbors. Coral reefs here are studied as climate-change refuge candidates.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SEEP ANALYSIS -->
+<section id="seep">
+  <div class="section-inner">
+    <div class="section-label">Critical Analysis</div>
+    <h2 class="section-title">The <em>SEEP</em> Framework</h2>
+    <div class="gold-rule"></div>
+    <p class="section-text">To understand the Red Sea crisis in full, we analyse it through four interconnected lenses: Social, Economic, Environmental, and Political. Each dimension reveals a different dimension of the fairness and justice crisis.</p>
+  </div>
+  <div class="seep-grid">
+    <div class="seep-card reveal">
+      <div class="seep-letter">S</div>
+      <div class="seep-tag">Social Perspective</div>
+      <div class="seep-title">Who Bears the Cost?</div>
+      <ul class="seep-list">
+        <li>300,000 Yemeni coastal fishers, with 60%+ losing livelihoods due to the ecological disruption of their fishing grounds. <span class="source-badge">Mongabay 2024</span></li>
+        <li>Egyptian artisanal fishers earn just 54% of average rural income — extreme poverty before ecological crises begin. <span class="source-badge">Pinnegar 2024</span></li>
+        <li>Eritrean and Djiboutian coastal communities face pollution with no capacity to deploy clean-up operations.</li>
+        <li><strong style="color:var(--gold-light)">Implication:</strong> The most vulnerable populations bear the greatest costs while lacking political voice in management decisions — a profound fairness failure.</li>
+      </ul>
+    </div>
+
+    <div class="seep-card reveal">
+      <div class="seep-letter">E</div>
+      <div class="seep-tag">Economic Perspective</div>
+      <div class="seep-title">Who Captures the Wealth?</div>
+      <ul class="seep-list">
+        <li>Suez Canal transit volumes dropped 57.5%, costing Egypt billions in revenues. <span class="source-badge">Atlas Institute 2025</span></li>
+        <li>Red Sea tourism generates ~$12 billion/year — but Yemen and Eritrea receive negligible shares due to conflict and infrastructure gaps. <span class="source-badge">Red Sea Creatures 2025</span></li>
+        <li>Fisheries produce $230 million/year but benefits are distributed unequally between nations.</li>
+        <li><strong style="color:var(--gold-light)">Implication:</strong> Economic benefits concentrate in wealthier states while ecological costs fall on poorer ones — violating the principle of fair development.</li>
+      </ul>
+    </div>
+
+    <div class="seep-card reveal">
+      <div class="seep-letter">E</div>
+      <div class="seep-tag">Environmental Perspective</div>
+      <div class="seep-title">What Is Being Lost?</div>
+      <ul class="seep-list">
+        <li>The MV Rubymar's 21,000 tonnes of fertilizer threatens algal blooms and oxygen-dead zones in coral habitat. <span class="source-badge">AGSI 2025</span></li>
+        <li>July 2025 oil slicks drifted within 13 km of Eritrea's Barasole Reserve — a 150,000-hectare biodiversity hotspot. <span class="source-badge">PAX 2025</span></li>
+        <li>No reef-wide management system exists despite the global uniqueness and climate-refuge potential of Red Sea corals. <span class="source-badge">Kleinhaus 2020</span></li>
+        <li><strong style="color:var(--gold-light)">Implication:</strong> If these corals are destroyed, humanity loses one of its last potential refuges as oceans warm — an irreversible global loss.</li>
+      </ul>
+    </div>
+
+    <div class="seep-card reveal">
+      <div class="seep-letter">P</div>
+      <div class="seep-tag">Political Perspective</div>
+      <div class="seep-title">Why Can't We Fix It?</div>
+      <ul class="seep-list">
+        <li>The Red Sea borders eight nations, some in active conflict, some with no diplomatic relations — preventing coordinated management. <span class="source-badge">Kleinhaus 2020</span></li>
+        <li>PERSGA exists since 1974 but lacks enforcement power; cannot compel compliance from a country in civil war. <span class="source-badge">UNEP 2024</span></li>
+        <li>Military responses (Operation Prosperity Guardian, Operation Aspides) address security but not root ecological causes.</li>
+        <li><strong style="color:var(--gold-light)">Implication:</strong> Political fragmentation is the root obstacle to fair management. Resolution requires diplomacy alongside ecology.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SOLUTION -->
+<section id="solution">
+  <div class="section-inner">
+    <div class="section-label">Expert Recommendation</div>
+    <h2 class="section-title">Three Interventions<br>for a <em>Just Future</em></h2>
+    <div class="gold-rule"></div>
+    <p class="section-text">As experts of the area, we propose three interconnected, evidence-based interventions that address the social, economic, environmental, and political dimensions of the Red Sea crisis simultaneously.</p>
+
+    <div class="solutions-list">
+      <div class="solution-item reveal">
+        <div class="solution-num">I</div>
+        <div class="solution-body">
+          <div class="solution-title">Red Sea Emergency Environmental Fund</div>
+          <div class="solution-text">All eight bordering nations — contributing proportionally to their GDP — establish a PERSGA-administered rapid-response fund for oil spill clean-up and ecological restoration. No coastline should be left unprotected simply because its government lacks resources. Contributions from wealthier states (Saudi Arabia, Egypt, Israel) subsidize the capacity of poorer ones (Yemen, Eritrea, Djibouti). This directly addresses the social and economic justice gap by ensuring that a pollution event in Eritrean waters receives the same response as one in Saudi waters. <span class="source-badge">UNEP 2024</span></div>
+        </div>
+      </div>
+      <div class="solution-item reveal" style="transition-delay:0.2s;">
+        <div class="solution-num">II</div>
+        <div class="solution-body">
+          <div class="solution-title">Red Sea Marine Refuge Protocol</div>
+          <div class="solution-text">A binding multilateral treaty designating the Gulf of Aqaba and northern Red Sea corals as a UNESCO-backed Marine Refuge Zone — with a reef-wide monitoring network, standardized data sharing across all eight nations, and a moratorium on destructive fishing practices within protected zones. Modelled on the Great Barrier Reef Marine Park and Coral Triangle Initiative, this addresses the critical gap identified by Kleinhaus et al. (2020): there is currently no coordinated reef-wide scientific management despite the global importance of these corals. <span class="source-badge">Kleinhaus 2020</span></div>
+        </div>
+      </div>
+      <div class="solution-item reveal" style="transition-delay:0.4s;">
+        <div class="solution-num">III</div>
+        <div class="solution-body">
+          <div class="solution-title">Equitable Revenue Sharing Mechanism</div>
+          <div class="solution-text">A percentage of Suez Canal revenues and Red Sea tourism income to be redistributed through an international development fund — managed by PERSGA with UN oversight — to Yemen, Eritrea, Djibouti, and Sudan. This fund would finance sustainable fisheries management programmes, marine protected area enforcement, and artisanal fisher support schemes. Economic justice is inseparable from ecological sustainability: communities living in poverty cannot be expected to protect marine ecosystems they depend on for survival. <span class="source-badge">Red Sea Creatures 2025</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<section id="cta">
+  <div class="section-inner">
+    <div class="section-label">Your Role</div>
+    <h2 class="cta-title">The Sea Needs<br><em>Your Voice</em></h2>
+    <p class="section-text" style="max-width:600px; margin: 0 auto; text-align:center;">
+      The Red Sea does not belong to governments or shipping companies. It belongs to the 28 million people who live on its shores, the billions who depend on its trade routes, and the generations who will inherit whatever we leave behind.
+    </p>
+
+    <div class="citizen-actions reveal">
+      <div class="action-card">
+        <div class="action-num">01</div>
+        <div class="action-title">Demand PERSGA Commitment</div>
+        <div class="action-text">Pressure your government to strengthen its obligations under the Jeddah Convention and contribute to the proposed Emergency Environmental Fund. Environmental diplomacy must match economic diplomacy. <span class="source-badge">UNEP 2024</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-num">02</div>
+        <div class="action-title">Choose Sustainable Seafood</div>
+        <div class="action-text">Reject fish caught through destructive trawl fishing. Support Egypt's 2024 moratorium and advocate for similar protections across all Red Sea nations. Your purchasing decisions directly affect fish stock recovery. <span class="source-badge">HEPCA 2024</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-num">03</div>
+        <div class="action-title">Advocate for Peace</div>
+        <div class="action-text">The environmental destruction will not end without resolving the Yemeni civil war. Political solutions — not just naval patrols — are required. Ending the conflict is an ecological imperative, not just a humanitarian one. <span class="source-badge">Frontiers 2025</span></div>
+      </div>
+      <div class="action-card">
+        <div class="action-num">04</div>
+        <div class="action-title">Support Red Sea NGOs</div>
+        <div class="action-text">Organizations like HEPCA, PERSGA, and PAX for Peace work on the frontlines of Red Sea protection. Support their research, advocacy, and community programs that give voice to the fishers and coastal communities most affected.</div>
+      </div>
+      <div class="action-card">
+        <div class="action-num">05</div>
+        <div class="action-title">Educate Others</div>
+        <div class="action-text">Share this information. Most citizens are unaware that oil slicks from Houthi attacks are threatening the world's most climate-resistant coral reefs. Awareness is the first step toward political will for change.</div>
+      </div>
+      <div class="action-card">
+        <div class="action-num">06</div>
+        <div class="action-title">Report Violations</div>
+        <div class="action-text">If you witness illegal fishing, waste dumping, or coral damage in Red Sea waters, report it to national environmental authorities and international bodies like PERSGA. Enforcement depends on citizen vigilance. <span class="source-badge">PERSGA 2025</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">Red Sea Matters</div>
+    <div class="footer-desc">
+      An IB MYP Geography Summative Assessment examining the Red Sea as a transboundary water resource — analysing issues of fairness, sustainability, and ecological justice across eight bordering nations.<br><br>
+      <em style="color:var(--gold); font-family:'Cormorant Garamond', serif;">Role: Expert of the Area · Audience: Citizens · Format: Website</em>
+    </div>
+  </div>
+  <div class="footer-authors">
+    <div class="footer-authors-label">Research & Authorship</div>
+    <span class="footer-author">Abilmansur Bilal</span>
+    <span class="footer-author">Tair Tursynkhan</span>
+    <span class="footer-author">Zeine Shaimardan</span>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <div class="footer-bottom-text">Grade 10D · NIS School · IB MYP Geography · Natural Resources Unit · 2025</div>
+</div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+      ring.style.width = '60px';
+      ring.style.height = '60px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+    });
+  });
+
+  // Particles
+  const particlesContainer = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * 15) + 's';
+    p.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+    p.style.width = p.style.height = (Math.random() > 0.7 ? '3px' : '2px');
+    p.style.opacity = Math.random() * 0.8 + 0.2;
+    particlesContainer.appendChild(p);
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal, .timeline-item, .solution-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, idx) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), idx * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Animate numbers counting up
+  function countUp(el, target, suffix = '') {
+    let current = 0;
+    const duration = 1800;
+    const step = target / (duration / 16);
+    const interval = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        current = target;
+        clearInterval(interval);
+      }
+      el.textContent = Math.floor(current).toLocaleString() + suffix;
+    }, 16);
+  }
+
+  const statObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        statObs.unobserve(entry.target);
+        const nums = entry.target.querySelectorAll('.stat-number');
+        // Just add a shimmer class — numbers are fixed text for this design
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.stat-grid').forEach(el => statObs.observe(el));
+
+  // Smooth active nav highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      const top = s.offsetTop - 100;
+      if (window.scrollY >= top) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current
+        ? 'var(--gold-light)' : '';
+    });
+  });
+</script>
+</body>
+</html>
